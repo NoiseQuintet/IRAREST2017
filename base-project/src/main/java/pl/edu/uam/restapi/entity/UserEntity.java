@@ -3,16 +3,10 @@ package pl.edu.uam.restapi.entity;
 import com.google.common.base.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.edu.uam.restapi.model.User;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.PostLoad;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -24,6 +18,7 @@ public class UserEntity {
 
     // auto-generated
     @Id
+    @Column(name="userId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
@@ -34,6 +29,9 @@ public class UserEntity {
     //fields can be renamed
     @Column(name = "last")
     private String lastName;
+
+    @OneToMany(mappedBy = "user")
+    private List<OrderEntity> orders;
 
     //fields can be indexed for better performance
     private boolean active = false;
@@ -57,6 +55,12 @@ public class UserEntity {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+    }
+    public UserEntity(Long id, String firstName, String lastName, boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.active = active;
     }
 
     public Long getId() {
@@ -91,5 +95,9 @@ public class UserEntity {
                 .add("lastName", lastName)
                 .add("active", active)
                 .toString();
+    }
+
+    public User toUser(){
+        return new User(id.toString(),firstName,lastName);
     }
 }

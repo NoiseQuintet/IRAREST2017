@@ -12,4 +12,6 @@ public interface UserDatabase {
     Collection<User> getUsers();
 
     User updateUser(String userId, User user);
+
+    void deleteUser (String id);
 }

@@ -1,7 +1,7 @@
 package pl.edu.uam.restapi.resources;
 
 import com.wordnik.swagger.annotations.Api;
-import pl.edu.uam.restapi.database.PostgresqlDB;
+import pl.edu.uam.restapi.database.PostgresqlDBUser;
 
 import javax.ws.rs.Path;
 
@@ -10,6 +10,6 @@ import javax.ws.rs.Path;
 public class PostgresUsersResource extends AbstractUsersResource {
 
     public PostgresUsersResource() {
-        super(new PostgresqlDB());
+        super(new PostgresqlDBUser());
     }
 }

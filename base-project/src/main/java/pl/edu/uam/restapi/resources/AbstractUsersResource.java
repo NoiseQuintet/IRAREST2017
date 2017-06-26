@@ -5,13 +5,7 @@ import pl.edu.uam.restapi.database.UserDatabase;
 import pl.edu.uam.restapi.exceptions.UserException;
 import pl.edu.uam.restapi.model.User;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -87,5 +81,25 @@ public abstract class AbstractUsersResource {
         User udpatedUser = userDatabase.updateUser(userId, user);
 
         return Response.ok(udpatedUser).build();
+    }
+
+
+    @Path("/{userId}")
+    @ApiOperation(value = "Delete user", notes = "Delete user", response = User.class)
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    public void deleteUser(@PathParam("userId") String userId) throws Exception {
+        User user = userDatabase.getUser(userId);
+
+        if (userId.equals("db")) {
+            throw new Exception("Database error");
+        }
+
+        if (user == null) {
+            throw new UserException("User not found", "Użytkownik nie został znaleziony", "http://docu.pl/errors/user-not-found");
+        }
+
+        userDatabase.deleteUser(userId);
+
     }
 }
